@@ -1,11 +1,11 @@
 //applying strong checks for correct deptnames/coursetype/sem number
 // main code (testing)
 
-// time:22:22(16/05/24) placement part working fine and able to fetch data from the databse
+// time:11:47(23/05/24) placement part working fine and able to fetch data from the databse
 
-// working fine and fire⚡till 14:24 pm 17 may 2024
+// working fine and fire⚡till 11:47 pm 23 may 2024
 const express = require("express");
-const path = require('path');
+
 const http = require("http");
 const socketIo = require("socket.io");
 
@@ -485,12 +485,10 @@ const con = mysql.createConnection({
   database: process.env.DB_DATABASE_NAME,
 });
 
-// Serve static files from the 'public' directory
-app.use(express.static(path.join(__dirname, 'public')));
-
-// Send index.html for the root route
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+// now define the routes
+app.get("/", (req, res) => {
+  // sending the html file as response..when the server starts at /
+  res.sendFile(__dirname + "/blank.html");
 });
 
 // now start web socket connection
@@ -1268,6 +1266,7 @@ function getPlacementRecord(department, year) {
 // Function to listen for user inputs..from anywhere
 function listenForUserInput(socket) {
   // Listen for user input
+  socket.removeAllListeners("chat message");
   socket.once("chat message", (msg) => {
     const {
       recognizedIntents,

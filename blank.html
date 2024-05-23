@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lightning BOT⚡</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+    />
+    <style>
+        * {
+          font-family: "Poppins", sans-serif;
+        }
+        ul {
+          list-style-type: none;
+          margin: 0;
+          padding: 0;
+          background: linear-gradient(to right, #12c2e9, #c471ed, #f64f59);
+          word-wrap: break-word;
+        }
+        li {
+          margin-top: 10px;
+          padding: 8px;
+          margin-bottom: 2px;
+          background: #f7ff00; /* fallback for old browsers */
+          background: -webkit-linear-gradient(
+            to right,
+            #db36a4,
+            #f7ff00
+          ); /* Chrome 10-25, Safari 5.1-6 */
+          background: linear-gradient(
+            to right,
+            #db36a4,
+            #f7ff00
+          ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  
+          font-size: small;
+          width: 55%;
+          border-radius: 10px;
+          margin-left: 2%;
+          color: white;
+        }
+  
+        .mainContainer {
+          box-sizing: border-box;
+          width: 25vw;
+          /* width: calc(25vw - 16px); */
+          height: 70vh;
+          /* border: 2px solid black; */
+          position: relative;
+          background: linear-gradient(to right, #12c2e9, #c471ed, #f64f59);
+        }
+        ul {
+          margin: 0;
+          padding: 0;
+          overflow-y: auto;
+          max-height: 85%;
+          scrollbar-width: thin;
+          scrollbar-color: #ccc transparent;
+        }
+        /* WebKit-based browsers */
+        ul::-webkit-scrollbar {
+          width: 10px;
+        }
+        ul::-webkit-scrollbar-thumb {
+          background-color: #ccc;
+          border-radius: 10px;
+        }
+  
+        /* Enable smooth scrolling */
+        ul {
+          scroll-behavior: smooth;
+        }
+        .fom {
+          position: absolute;
+          bottom: 0;
+          padding: 3px 5px;
+          display: flex;
+          align-items: center;
+          background: black;
+          width: -webkit-fill-available;
+        }
+        .heading {
+          margin: 0;
+          text-align: center;
+          background: linear-gradient(0.25turn, #3f87a6, #ebf8e1, #f69d3c);
+        }
+        .mainContainer input[type="text"] {
+          height: 15px;
+          width: 80%;
+          border-radius: 10px 0 0 10px;
+          border: 2px solid orange;
+          outline: none;
+          cursor: pointer;
+          margin-right: 5px;
+          margin-left: 7px;
+        }
+        .mainContainer input[type="text"]:hover {
+          border: 2px solid rgb(49, 245, 235);
+          transition: all 0.1s ease-in-out;
+        }
+        .mainContainer button {
+          cursor: pointer;
+          right: 0;
+          border-radius: 0 10px 10px 0;
+          height: 21px;
+          border: 2px solid green;
+          font-size: smaller;
+          background: rgb(113, 224, 113);
+        }
+        .mainContainer button:hover {
+          transition: 0.1s ease-in-out;
+          background-color: #12c2e9;
+        }
+        .icon {
+          font-size: medium;
+          color: white;
+        }
+  
+        .userMessage,
+        .botMessage {
+          animation: slideIn 1s ease forwards;
+        }
+        .botMessage {
+          background: linear-gradient(
+            135.8deg,
+            rgb(26, 26, 29) 27.1%,
+            rgb(111, 34, 50) 77.5%
+          );
+          /* float: right; eta bot er message ta right e dekahnor jonno */
+          /* but it caused some problems thus using margin */
+          margin-left: 37%;
+          color: white;
+        }
+  
+        /* button to collapse and reshow the chat interface style goes here */
+        .chatbot-button {
+          width: 60px;
+          color: rgb(234, 166, 8);
+          height: 60px;
+          background-color: #172a3e;
+          border-radius: 50%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          cursor: pointer;
+          position: fixed;
+          bottom: 20px;
+          right: 20px;
+          z-index: 1000;
+        }
+        .chatbot-button:hover {
+          background-color: #12c2e9;
+          color: black;
+          transition: all 0.1s ease-in-out;
+        }
+        /* .chatbot-button .material-icons {
+          color: white;
+          font-size: 24px;
+        } */
+        .chatbot-container {
+          background-color: red;
+          width: 25vw;
+          height: 410px;
+          position: fixed;
+          overflow: hidden;
+          bottom: 90px;
+          right: 20px;
+          background-color: #f0f0f0;
+          border-radius: 10px;
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+          display: flex;
+          flex-direction: column;
+          z-index: 999;
+          transform: scale(0);
+          transition: transform 0.3s ease-out;
+          transform-origin: bottom right;
+        }
+        .chatbot-container.show {
+          transform: scale(1);
+        }
+        .hidden {
+          display: none;
+        }
+  
+        .chatbot-button:focus {
+          outline: none;
+        }
+        .chatbot-button:active {
+          transform: scale(0.9);
+          transition: transform 0.1s;
+        }
+        #collapseChat {
+          outline: none;
+          border: none;
+        }
+        #collapseChat:hover {
+          transition: 0.3s all ease-in-out;
+          background-color: #e81313;
+          color: white;
+        }
+  
+        /* new record/faculty styles add here */
+        #facultyForm {
+          gap: 2px;
+          margin-bottom: 20px;
+          width: 40%;
+          padding: 20px 20px;
+          /* border: 2px solid green; */
+          border-radius: 50px;
+          background: linear-gradient(135deg, #00bfff, #ff00ff);
+          color: white;
+          font-weight: 600;
+        }
+        .hihi {
+          display: flex;
+          gap: 3;
+        }
+  
+        label {
+          display: block;
+          margin-bottom: 5px;
+        }
+  
+        #facultyName,
+        #facultyDeg,
+        #facultyDes,
+        #facultyEmail,
+        #facultyTeachExp,
+        #facultyResearchExp,
+        #facultyIndustryExp,
+        #facultyResearchInterest,
+        #facultyTeachingInterest,
+        #facultyDepartmentId {
+          width: 80%;
+          padding: 8px;
+          margin-bottom: 10px;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+          box-sizing: border-box;
+        }
+  
+        #addFacBtn {
+          padding: 10px 20px;
+          color: white;
+          border: none;
+          border-radius: 4px;
+          cursor: pointer;
+          background-color: #0056b3;
+          box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+          transform: translateY(-3px);
+          font-size: 15px;
+          font-weight: bolder;
+        }
+        #addFacBtn:active {
+          transform: translateY(1px);
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        #addFacBtn:hover {
+          background-color: #11b775;
+          transition: 0.3s all ease-in-out;
+        }
+  
+        #placementForm {
+          gap: 2px;
+          margin-bottom: 20px;
+          width: 40%;
+          padding: 20px 20px;
+          /* border: 2px solid rgb(174, 27, 214); */
+          border-radius: 50px;
+          background: linear-gradient(135deg, #00c9ff, #92fe9d);
+          color: black;
+          font-weight: 600;
+          font-size: 16px;
+        }
+  
+        #placementAddbtn {
+          padding: 10px 20px;
+          color: white;
+          border: none;
+          border-radius: 4px;
+          cursor: pointer;
+          background-color: #0056b3;
+          box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+          transform: translateY(-3px);
+          height: 50px;
+          margin-top: 120px;
+          font-size: 15px;
+          font-weight: bolder;
+        }
+        #placementAddbtn:active {
+          transform: translateY(1px);
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        #placementAddbtn:hover {
+          background-color: #dc8a0f;
+          transition: 0.3s all ease-in-out;
+        }
+  
+        #studentName,
+        #studentDepartment,
+        #placementCompany,
+        #placementYear {
+          width: 100%;
+          padding: 8px;
+          margin-bottom: 10px;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+          box-sizing: border-box;
+        }
+  
+        .formContainer {
+          display: flex;
+          justify-content: space-between;
+          /* border: 2px solid red; */
+          padding: 10px 10px;
+        }
+        /* Adjustments for smaller screens */
+        @media (max-width: 600px) {
+          .mainContainer {
+            width: 50vw;
+            /* height: 110vh; */
+            height: calc(50vh - 50px);
+            /* bottom: 10%; */
+          }
+          .chatbot-container {
+            height: 50%;
+            width: 50vw;
+            /* bottom: 120px; */
+            overflow-x: hidden;
+          }
+          .heading {
+            font-size: smaller;
+            padding: 10px 10px;
+          }
+  
+          .fom {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 3px 2px;
+            display: flex;
+            align-items: center;
+            background: black;
+            z-index: 1001; /* Ensure it's above chat container */
+          }
+          .mainContainer input[type="text"] {
+            width: calc(100% - 50px); /* Adjust width */
+          }
+          .mainContainer button {
+            position: fixed;
+            bottom: 2px;
+            right: 0px;
+            z-index: 1001; /* Ensure it's above chat container */
+          }
+          .chatbot-button {
+            width: 35px;
+            height: 35px;
+          }
+          li {
+            font-size: small;
+          }
+        }
+        @keyframes slideIn {
+          from {
+            transform: translateX(-100%);
+            opacity: 0;
+          }
+          to {
+            transform: translateX(0);
+            opacity: 1;
+          }
+        }
+        @media (max-width: 1000px) {
+          .hihi {
+            flex-wrap: wrap;
+          }
+  
+          #facultyName,
+          #facultyDeg,
+          #facultyDes,
+          #facultyEmail,
+          #facultyTeachExp,
+          #facultyResearchExp,
+          #facultyIndustryExp,
+          #facultyResearchInterest,
+          #facultyTeachingInterest,
+          #facultyDepartmentId {
+            width: 80%;
+            padding: 4px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 15px;
+          }
+          label{
+              font-size: 15px;
+          }
+        }
+      </style>
+</head>
+<body>
+    <div class="chatbot-container hidden" id="chatbotContainer">
+        <div class="mainContainer">
+          <h3 class="heading">⚡Lightning Bot⚡</h3>
+          <ul id="messages"></ul>
+  
+          <form action="" id="form" class="fom">
+            <input type="text" id="input" class="in" autocomplete="off" /><button>
+              <span class="material-symbols-outlined icon"> send </span>
+            </button>
+          </form>
+        </div>
+        <!-- button to collapse the chat interface -->
+        <button id="collapseChat">Collapse Chat</button>
+      </div>
+      <div id="chatbotButton" class="chatbot-button">
+        <span class="material-symbols-outlined"> electric_bolt </span>
+      </div>
+  
+      <!-- include socket.io inbuild js file -->
+      <script src="/socket.io/socket.io.js"></script>
+  
+      <!-- custom js starting -->
+      <script>
+        var socket = io();
+        // hold the form using id
+        var form = document.getElementById("form");
+        // hold the input box
+        var input = document.getElementById("input");
+  
+        // add event listener to the form
+        form.addEventListener("submit", (e) => {
+          // prevent any default values to be submitted
+          e.preventDefault();
+  
+          // now check for values in the input box
+          if (input.value) {
+            // emit the chat message as the user inputted text
+            socket.emit("chat message", input.value);
+  
+            // now create a div/list to show what user typed in the screen
+            var item = document.createElement("li");
+            item.classList.add("userMessage");
+            // add the message content to the li
+            item.textContent = "👨‍💻You: " + input.value;
+  
+            // now add the li to the main message ul
+            document.getElementById("messages").appendChild(item);
+  
+            // also scroll the window to that message height
+            document.getElementById(
+              "messages"
+            ).scrollTop = document.getElementById("messages").scrollHeight;
+  
+            // after adding the message empty the input box
+            input.value = "";
+          }
+        });
+  
+        //creating the response format for the bot too..adding a delay before adding the message to the ul element so as to feature a natural conversation flow
+        socket.on("chat message", function(msg) {
+          setTimeout(function() {
+            var item = document.createElement("li");
+            item.textContent = msg.user + ": " + msg.text;
+  
+            // adding a class to target the bot message and style it accordingly
+            item.classList.add("botMessage");
+  
+            document.getElementById("messages").appendChild(item);
+            document.getElementById(
+              "messages"
+            ).scrollTop = document.getElementById("messages").scrollHeight;
+          }, 1500); //delay of 1s
+        });
+  
+        //   hide/unhide chat interface
+        // script.js
+        document.addEventListener("DOMContentLoaded", () => {
+          const chatbotButton = document.getElementById("chatbotButton");
+          const chatbotContainer = document.getElementById("chatbotContainer");
+          const collapseChat = document.getElementById("collapseChat");
+  
+          chatbotButton.addEventListener("click", function() {
+            // Toggle show class instead of hidden
+            if (chatbotContainer.classList.contains("show")) {
+              chatbotContainer.classList.remove("show");
+              setTimeout(() => chatbotContainer.classList.add("hidden"), 300); // Wait for animation
+            } else {
+              chatbotContainer.classList.remove("hidden");
+              requestAnimationFrame(() => chatbotContainer.classList.add("show"));
+            }
+          });
+  
+          collapseChat.addEventListener("click", function() {
+            chatbotContainer.classList.remove("show");
+            setTimeout(() => chatbotContainer.classList.add("hidden"), 300); // Wait for animation
+          });
+        });
+      </script>
+      <!-- script to add faculty details..ie sending the user entered data as post request to the backend server -->
+      <script>
+        document
+          .getElementById("facultyForm")
+          .addEventListener("submit", function(event) {
+            event.preventDefault(); // Prevent default form submission
+            addFaculty(); // Call your custom function
+          });
+        function addFaculty() {
+          console.log(
+            "!!################################Form is submitted and now i am inside callback"
+          );
+          const facultyName = document.getElementById("facultyName").value;
+          const facultyDeg = document.getElementById("facultyDeg").value;
+          const facultyDes = document.getElementById("facultyDes").value;
+          const facultyEmail = document.getElementById("facultyEmail").value;
+          const facultyTeachExp = document.getElementById("facultyTeachExp")
+            .value;
+          const facultyResearchExp = document.getElementById("facultyResearchExp")
+            .value;
+          const facultyIndustryExp = document.getElementById("facultyIndustryExp")
+            .value;
+          const facultyResearchInterest = document.getElementById(
+            "facultyResearchInterest"
+          ).value;
+          const facultyTeachingInterest = document.getElementById(
+            "facultyTeachingInterest"
+          ).value;
+          const facultyDepartmentId = document.getElementById(
+            "facultyDepartmentId"
+          ).value;
+  
+          console.log("@###hey see here", facultyName, facultyDeg, facultyEmail);
+          // now prepare the data to be sent
+          const data = {
+            facultyName: facultyName,
+            facultyDeg: facultyDeg,
+            facultyDes: facultyDes,
+            facultyEmail: facultyEmail,
+            facultyTeachExp: facultyTeachExp,
+            facultyResearchExp: facultyResearchExp,
+            facultyIndustryExp: facultyIndustryExp,
+            facultyResearchInterest: facultyResearchInterest,
+            facultyTeachingInterest: facultyTeachingInterest,
+            facultyDepartmentId: facultyDepartmentId,
+          };
+  
+          console.log(data); //etao correct
+  
+          // send this data to the backend server using fectch api and post request
+          fetch("/addFaculty", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            // make the object as json
+            body: JSON.stringify(data),
+          })
+            .then((res) => {
+              if (res.ok) {
+                alert("Faculty details added successfully..!!");
+                // clear the form after data got submitted successfully
+                document.getElementById("facultyForm").reset();
+                return res.json();
+              } else {
+                throw new Error("Failed to add the faculty!!");
+              }
+            })
+            .catch((err) => {
+              console.log("Error", err);
+              alert("Failed to add the faculty");
+            });
+        }
+  
+        //function to add placement record
+        function addPlacement() {
+          const studentName = document.getElementById("studentName").value;
+          const studentDepartment = document.getElementById("studentDepartment")
+            .value;
+          const placementYear = document.getElementById("placementYear").value;
+          const placementCompany = document.getElementById("placementCompany")
+            .value;
+  
+          const data = {
+            studentName: studentName,
+            studentDepartment: studentDepartment,
+            placementYear: placementYear,
+            placementCompany: placementCompany,
+          };
+  
+          // send data to the server using fetch api
+          fetch("/addPlacement", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+          })
+            .then((res) => {
+              if (res.ok) {
+                alert("Placement details added successfully..!!");
+                //   clear the form on successful submission
+                document.getElementById("placementForm").reset();
+              } else {
+                throw new Error("Failed to add the placement record!!");
+              }
+            })
+            .catch((err) => {
+              console.log("Error", err);
+              alert("Failed to add the placement record");
+            });
+        }
+  
+        // now handle these routes on the express backend server
+      </script>
+</body>
+</html>
